@@ -13,10 +13,7 @@ const kineticEnergy = () => {
 }
 function setup() {
   createCanvas(400, 400);
-  angleMode(DEGREES)
   textSize(16);
-
-  //frameRate(30)
   object1.init(100, 50, 4)
   object2.init(0, 25, 64)
   object2.velocity.x = 3
@@ -27,13 +24,7 @@ function draw() {
   background(200)
   object1.update()
   object2.update()
-  if (object1.vector.x <= object2.vector.x + object2.size){
-    var velocities = elasticCollisionSpeed(object1.size, object2.size, object1.velocity.x, object2.velocity.x)
-    object1.velocity.x = velocities.v1
-    object2.velocity.x = velocities.v2
-  }
-
-  if (object1.vector.x <= object2.vector.x - object2.size && object2.vector.x < 0){
+  if (object1.vector.x <= object2.vector.x + object2.size || (object1.vector.x <= object2.vector.x - object2.size && object2.vector.x < 0)){
     var velocities = elasticCollisionSpeed(object1.size, object2.size, object1.velocity.x, object2.velocity.x)
     object1.velocity.x = velocities.v1
     object2.velocity.x = velocities.v2
