@@ -3,6 +3,13 @@ const object2 = new SquareObject()
 // NOTE - THERE IS A DIFFERENT EQUATION FOR 2D MOMENTUM
 // https://imada.sdu.dk/~rolf/Edu/DM815/E10/2dcollisions.pdf
 
+const circleCollide = (x1, x2, y1, y2, r1, r2) => {
+  var dist = Math.sqrt((x2 - x1 ) ** 2 + (y2 - y1) ** 2);
+  if (dist <= r1 + r2){
+    return true;  
+  } return false;
+}
+
 const elasticCollision1D = (m1, m2, v1, v2) => {
   var object2speed = ((2 * m1)/(m1 + m2)) * v1 - ((m1-m2)/(m1 + m2)) * v2
   var object1speed = ((m1-m2)/(m1 + m2)) * v1 + ((2 * m2)/(m1 + m2)) * v2 // http://hyperphysics.phy-astr.gsu.edu/hbase/elacol2.html#c3  
@@ -50,27 +57,58 @@ const collide = () => {
 function setup() {
   createCanvas(400, 400);
   textSize(16);
-  object1.init(Math.round(random(0, 400)), Math.round(random(0, 396)), 4)
-  object2.init(Math.round(random(0, 346)), Math.round(random(0, 346)), 64)
-  //object2.velocity.x = 3
-  //object2.velocity.mult(-1)
+  object1.init(0, 0, 4)
+  object1.vector.x = Math.round(random(object1.size, 400 - object1.size))
+  object1.vector.y = Math.round(random(object1.size, 400 - object1.size))
+  object2.init(0, 0, 64)
+  object2.vector.x = Math.round(random(object2.size, 400 - object2.size))
+  object2.vector.y = Math.round(random(object2.size, 400 - object2.size))
+  
 }
+
+function mouseDragged(){
+  var dx = (object2.vector.x - mouseX) ** 2
+  var dy = (object2.vector.y - mouseY) ** 2
+  var dist = Math.sqrt(dx + dy)
+  if (dist <= object2.size){
+    object2.vector = createVector(mouseX, mouseY)
+  }
+  dx = (object1.vector.x - mouseX) ** 2
+  dy = (object1.vector.y - mouseY) ** 2
+  dist = Math.sqrt(dx + dy)
+  if (dist <= (object1.size + 10)){
+    object1.vector = createVector(mouseX, mouseY)
+  }
+}
+
+
 
 function draw() {
   background(0)
   noStroke()
+  const size1Div = document.getElementById("size1")
+  size1Div.oninput = () => {
+    object1.size = parseInt(document.getElementById("size1").value)
+    console.log(size1Div.value)
+  }
+  const size2Div = document.getElementById("size2")
+  size2Div.oninput = () => {
+    object2.size = parseInt(document.getElementById("size2").value)
+    console.log(size2Div.value)
+  }
+  
   object1.update()
   object2.update()
-  if (object1.vector.x <= object2.vector.x + object2.size && object1.vector.x >= object2.vector.x && (object1.vector.y >= object2.vector.y && object1.vector.y <= object2.vector.y + object2.size )){
+  if (circleCollide(object1.vector.x, object2.vector.x, object1.vector.y, object2.vector.y, object1.size, object2.size)){
+    console.log("hit")
     p1 = momentum()
     collide()
     p2 = momentum()
     console.log("momentum before = "+ p1 + "momentum after = " + p2)
-    object1.update()
-  object2.update()
-  }  
+  }
+ 
   object2.display()
   object1.display()
-  //text("object1 velocity = " + object1.velocity.x + "\nobject2 velocity = " + object2.velocity.x + "\nMomentum X, Y = " + momentumBefore().x + ", " + momentumBefore().y + "\nKE = " + kineticEnergy(), 0, 300 ) 
-  document.getElementById("info").innerHTML = "<p> Object 1 velocity = " + object1.velocity.mag() + "</p> <p> Momentum = " + momentum() + "</p><p>KE = " + kineticEnergy() + "</p>"
+
+  document.getElementById("info").innerHTML = "<p> Object 1 Velocity = " + round(object1.velocity.mag(), 2) + "</p> <p> Object 2 Velocity = " +round(object2.velocity.mag(), 2) + "</p> <p> Momentum = " + round(momentum(), 2) + "</p><p>Kinetic Energy = " + round(kineticEnergy(), 2) + "</p>"
 }
