@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sketch</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Sketch</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.min.js"></script>
-    <script src="square.js"></script>
-    <script src="sketch.js"></script>
-    
-    
-  </head>
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-  <body oncontextmenu="return false;">
-    <div id="info"></div>
-    <div id="sizeDiv">
-      Object 1 Size:
-      <input type="range" min="1" max="64" value="4" class="slider" id="size1">
-      Object 2 Size:
-      <input type="range" min="1" max="64" value="64" class="slider" id="size2">
-    </div>
-    <div id="arrow">
-      <button type="button" onclick="changeArrow()">Arrow</button>
-    </div>
-  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.min.js"></script>
+  <script src="square.js"></script>
+  <script src="sketch.js"></script>
+
+
+</head>
+
+<body oncontextmenu="return false;">
+  <a href="/1d.html">1d Momentum</a>
+  <a href="/orbit.html">Orbit Sim</a>
+  <div id="info"></div>
+  <div id="sizeDiv">
+    Object 1 Size:
+    <input type="range" min="1" max="64" value="4" class="slider" id="size1">
+    Object 2 Size:
+    <input type="range" min="1" max="64" value="64" class="slider" id="size2">
+  </div>
+  <div id="arrow">
+    <button type="button" onclick="changeArrow()">Arrow</button>
+  </div>
+</body>
+
 </html>
