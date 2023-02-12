@@ -1,15 +1,22 @@
 const G = 6.6743 * 10 ** -12
 
-const sun = {
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+} // from mozilla page
+
+const b = getRandomArbitrary(200, 400)
+
+const Sun = {
     mass: 1.989 * (10 ** 30),
     x: 300,
     y: 300,
-    b: 300,
+    b: 450,
     mu: G * 1.989 * (10 ** 30)
 }
 
-function angularVisVeva(Sun, r, a, b) {
-    mu = Sun.mu
+function angularVisVeva(sun, r, a, b) {
+    mu = sun.mu
     T = 2 * Math.PI * Math.sqrt(a ** 3 / mu)
     thetadot = (2 * Math.PI * a * b) / (T / 2 * r ** 2)
     return thetadot * 10 ** -8
@@ -17,14 +24,14 @@ function angularVisVeva(Sun, r, a, b) {
 
 function orbit(x) {
     // focus = sun.x, sun.y
-    x_foci = sun.x
-    y_foci = sun.y
-    ellipse_a = Math.sqrt((x_foci - x) ** 2 + sun.b ** 2)
+    x_foci = Sun.x
+    y_foci = Sun.y
+    ellipse_a = Math.sqrt((x_foci - x) ** 2 + Sun.b ** 2)
     return {
-        x: (ellipse_a + sun.x) / 2,
-        y: sun.y,
+        x: (ellipse_a + Sun.x) / 2,
+        y: Sun.y,
         a: ellipse_a,
-        b: sun.b,
+        b: Sun.b,
         x_foci: x_foci,
         y_foci: y_foci
     }
@@ -33,8 +40,11 @@ function orbit(x) {
 function planet(t, orbit) {
     planetx = orbit.x + orbit.a / 2 * Math.cos(t)
     planety = orbit.y + orbit.b / 2 * Math.sin(t)
-    line(planetx, planety, sun.x, sun.y)
-    planetr = Math.sqrt(((planetx - sun.x) ** 2) + ((planety - sun.y) ** 2))
+    stroke("grey")
+    strokeWeight(4)
+    line(planetx, planety, Sun.x, Sun.y)
+    strokeWeight(1)
+    planetr = Math.sqrt(((planetx - Sun.x) ** 2) + ((planety - Sun.y) ** 2))
     return {
         x: planetx,
         y: planety,
@@ -42,7 +52,7 @@ function planet(t, orbit) {
     }
 }
 
-const orbit1 = orbit(Math.random() * 750)
+const orbit1 = orbit(getRandomArbitrary(300, 750))
 
 var t;
 function setup() {
@@ -52,14 +62,18 @@ function setup() {
 }
 
 
-
 function draw() {
-    background(200)
+    background(0)
+    color('white')
     ellipse(orbit1.x, orbit1.y, orbit1.a, orbit1.b)
-    circle(sun.x, sun.y, (sun.mass * (10 ** -28)) / 2)
+    fill("yellow")
+    circle(Sun.x, Sun.y, (Sun.mass * (10 ** -28)) / 2)
+    fill("green")
     planet1 = planet(t, orbit1)
     circle(planet1.x, planet1.y, 20)
-    omega = angularVisVeva(sun, planet1.r, orbit1.a, orbit1.b)
+    noFill()
+    omega = angularVisVeva(Sun, planet1.r, orbit1.a, orbit1.b)
     t = t + omega
+
 
 }
